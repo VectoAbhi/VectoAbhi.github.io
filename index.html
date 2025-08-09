@@ -1,1195 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhishek Deshpande - Cloud Security Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom Cybersecurity Theme */
-        :root {
-            --cyber-primary: #0a0a0a;
-            --cyber-secondary: #121212;
-            --cyber-accent: #00ff41;
-            --cyber-accent-2: #00d4ff;
-            --cyber-accent-3: #8b5cf6;
-            --cyber-text: #ffffff;
-            --cyber-text-muted: #a1a1aa;
-            --cyber-border: #27272a;
-            --cyber-glow: rgba(0, 255, 65, 0.3);
-        }
-
-        * {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--cyber-primary) 0%, var(--cyber-secondary) 100%);
-            overflow-x: hidden;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--cyber-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-screen.fade-out {
-            opacity: 0;
-        }
-
-        .terminal-loader {
-            font-family: 'Courier New', monospace;
-            color: var(--cyber-accent);
-            font-size: 1.2rem;
-        }
-
-        .prompt {
-            color: var(--cyber-accent-2);
-        }
-
-        .cursor {
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Custom Cybersecurity Background Effect */
-        .cyber-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-
-        /* Floating Security Icons */
-        .security-icon {
-            position: absolute;
-            font-size: 20px;
-            color: var(--cyber-accent);
-            opacity: 0.1;
-            animation: float 20s linear infinite;
-        }
-
-        .security-icon:nth-child(2n) {
-            color: var(--cyber-accent-2);
-            animation-duration: 25s;
-            animation-direction: reverse;
-        }
-
-        .security-icon:nth-child(3n) {
-            color: var(--cyber-accent-3);
-            animation-duration: 30s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-            }
-        }
-
-        /* Subtle Grid Pattern */
-        .grid-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            opacity: 0.03;
-            background-image: 
-                linear-gradient(var(--cyber-accent) 1px, transparent 1px),
-                linear-gradient(90deg, var(--cyber-accent) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-
-        /* Scanning Line Effect */
-        .scan-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--cyber-accent), transparent);
-            z-index: -1;
-            animation: scan 8s linear infinite;
-        }
-
-        @keyframes scan {
-            0% {
-                transform: translateY(-2px);
-            }
-            100% {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .nav.scrolled {
-            background: rgba(10, 10, 10, 0.95);
-            border-bottom: 1px solid var(--cyber-border);
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--cyber-accent);
-        }
-
-        .nav-link {
-            color: var(--cyber-text);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--cyber-accent);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--cyber-accent);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .nav-toggle span {
-            width: 25px;
-            height: 3px;
-            background: var(--cyber-text);
-            margin: 3px 0;
-            transition: 0.3s;
-        }
-
-        /* Glitch Effect */
-        .glitch {
-            position: relative;
-            color: var(--cyber-text);
-            font-size: inherit;
-            font-weight: inherit;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: glitch 3s linear infinite;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            animation: glitchTop 1s linear infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-            -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-        }
-
-        .glitch::after {
-            animation: glitchBottom 1.5s linear infinite;
-            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-            -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px, 0) skew(0deg); }
-            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
-            62% { transform: translate(0, 0) skew(5deg); }
-        }
-
-        @keyframes glitchTop {
-            2%, 64% { transform: translate(2px, -2px); }
-            4%, 60% { transform: translate(-2px, 2px); }
-            62% { transform: translate(13px, -1px) skew(-13deg); }
-        }
-
-        @keyframes glitchBottom {
-            2%, 64% { transform: translate(-2px, 0); }
-            4%, 60% { transform: translate(-2px, 0); }
-            62% { transform: translate(-22px, 5px) skew(21deg); }
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 2;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--cyber-accent), var(--cyber-accent-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem;
-            color: var(--cyber-text);
-            margin-bottom: 2rem;
-        }
-
-        .terminal-prompt {
-            color: var(--cyber-accent-2);
-        }
-
-        .typing-text {
-            color: var(--cyber-accent);
-            border-right: 2px solid var(--cyber-accent);
-            animation: blink 1s infinite;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--cyber-text);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-10px) translateX(-50%); }
-            60% { transform: translateY(-5px) translateX(-50%); }
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 0;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--cyber-text);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Cards */
-        .card {
-            background: rgba(18, 18, 18, 0.8);
-            border: 1px solid var(--cyber-border);
-            border-radius: 0.5rem;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .card:hover {
-            border-color: var(--cyber-accent);
-            box-shadow: 0 0 20px var(--cyber-glow);
-            transform: translateY(-5px);
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding: 0 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--cyber-accent);
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 4rem;
-            width: 50%;
-        }
-
-        .timeline-item:nth-child(even) {
-            margin-left: 50%;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            top: 1rem;
-            width: 20px;
-            height: 20px;
-            background: var(--cyber-accent);
-            border-radius: 50%;
-            border: 3px solid var(--cyber-primary);
-        }
-
-        .timeline-item:nth-child(odd)::before {
-            right: -41px;
-        }
-
-        .timeline-item:nth-child(even)::before {
-            left: -41px;
-        }
-
-        /* Skills */
-        .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .skill-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(18, 18, 18, 0.8);
-            border: 1px solid var(--cyber-border);
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-item:hover {
-            border-color: var(--cyber-accent);
-            box-shadow: 0 0 15px var(--cyber-glow);
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            color: var(--cyber-accent);
-            margin-bottom: 1rem;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Contact Form */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(18, 18, 18, 0.8);
-            border: 1px solid var(--cyber-border);
-            border-radius: 0.25rem;
-            color: var(--cyber-text);
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--cyber-accent);
-            box-shadow: 0 0 10px var(--cyber-glow);
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid var(--cyber-accent);
-            color: var(--cyber-accent);
-            border-radius: 0.25rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            background: var(--cyber-accent);
-            color: var(--cyber-primary);
-            box-shadow: 0 0 20px var(--cyber-glow);
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.6s ease;
-        }
-
-        .slide-in-left.animate {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: all 0.6s ease;
-        }
-
-        .slide-in-right.animate {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: rgba(10, 10, 10, 0.95);
-                flex-direction: column;
-                justify-content: start;
-                align-items: center;
-                padding-top: 2rem;
-                transition: left 0.3s ease;
-            }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .nav-toggle {
-                display: flex;
-            }
-
-            .nav-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-
-            .nav-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .nav-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -6px);
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .timeline::before {
-                left: 2rem;
-            }
-
-            .timeline-item {
-                width: calc(100% - 4rem);
-                margin-left: 4rem;
-            }
-
-            .timeline-item:nth-child(even) {
-                margin-left: 4rem;
-            }
-
-            .timeline-item::before {
-                left: -41px;
-            }
-
-            .timeline-item:nth-child(even)::before {
-                left: -41px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abhishek Deshpande | Cybersecurity Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Background effects */
+    body {
+      background-color: #0b0f19;
+      color: #e5e7eb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .grid-bg {
+      background: radial-gradient(circle at center, rgba(0,255,128,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+    }
+    .floating-icons {
+      position: fixed; inset: 0;
+      z-index: -2; pointer-events: none;
+    }
+    .floating-icons span {
+      position: absolute; font-size: 1.5rem; opacity: 0.08;
+      animation: float 20s infinite linear;
+    }
+    @keyframes float {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-200vh) rotate(360deg); }
+    }
+    .scan-line {
+      position: fixed; width: 100%; height: 2px;
+      background: rgba(0,255,128,0.2);
+      animation: scan 8s linear infinite;
+      z-index: -1;
+    }
+    @keyframes scan {
+      0% { top: -2px; }
+      50% { top: 100%; }
+      100% { top: -2px; }
+    }
+    .text-justify { text-align: justify; }
+    /* Timeline styling */
+    .timeline {
+      position: relative;
+      margin-left: 1rem;
+      border-left: 2px solid rgba(0,255,128,0.4);
+    }
+    .timeline-marker {
+      position: absolute;
+      left: -0.65rem;
+      background: #0b0f19;
+      border: 2px solid #00ff80;
+      width: 1rem; height: 1rem;
+      border-radius: 50%;
+    }
+  </style>
 </head>
-<body class="bg-black text-white">
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="terminal-loader">
-            <span class="prompt">root@security:~$</span>
-            <span class="loading-text"></span>
-            <span class="cursor">_</span>
-        </div>
+<body>
+  <!-- Background -->
+  <div class="grid-bg"></div>
+  <div class="floating-icons">
+    <span style="left:5%; top:80%;">🔒</span>
+    <span style="left:25%; top:90%; animation-delay: 4s;">🛡️</span>
+    <span style="left:50%; top:85%; animation-delay: 8s;">🔑</span>
+    <span style="left:75%; top:95%; animation-delay: 12s;">💻</span>
+    <span style="left:90%; top:88%; animation-delay: 2s;">📡</span>
+  </div>
+  <div class="scan-line"></div>
+
+  <!-- Header -->
+  <header class="p-6 border-b border-gray-700">
+    <h1 class="text-3xl font-bold text-green-400">Abhishek Deshpande</h1>
+    <p class="text-gray-400">Cybersecurity Specialist – Multi‑Cloud Security | Threat Detection | Incident Response</p>
+  </header>
+
+  <!-- Welcome -->
+  <section class="p-6">
+    <p class="text-lg text-gray-300 text-justify">
+      Welcome to the portfolio of <span class="text-green-400 font-semibold">Abhishek Deshpande</span> — Cybersecurity Specialist in multi‑cloud security, threat detection, and incident response.
+    </p>
+  </section>
+
+  <!-- Professional Experience (Timeline) -->
+  <section class="p-6">
+    <h2 class="text-2xl font-bold text-green-400 mb-6">Professional Experience</h2>
+    <div class="timeline space-y-8 pl-6">
+
+      <!-- JP Morgan -->
+      <div class="relative">
+        <div class="timeline-marker"></div>
+        <h3 class="text-xl font-semibold">JP Morgan Chase & Co. – Cybersecurity Engineer</h3>
+        <p class="text-sm text-gray-400 mb-2">Chicago, IL | June 2025 – Present</p>
+        <p class="text-gray-300 text-justify">
+          At JP Morgan Chase, I lead efforts to enhance security monitoring and incident response for over 20 critical banking applications. By streamlining log ingestion and event correlation using Microsoft Sentinel and Splunk, I have significantly accelerated threat detection in heavily regulated environments. My work on vulnerability assessments and remediation coordination has fortified endpoint defenses, reducing risks to critical finance systems. I also design and execute phishing simulations grounded in the MITRE ATT&CK framework, resulting in measurable improvements in employee threat recognition. Additionally, I manage identity governance through robust Azure AD access controls and have spearheaded compliance reviews aligned with SOC 2, NIST, and FFIEC standards.
+        </p>
+      </div>
+
+      <!-- KPMG -->
+      <div class="relative">
+        <div class="timeline-marker"></div>
+        <h3 class="text-xl font-semibold">KPMG – Cyber Security Consultant</h3>
+        <p class="text-sm text-gray-400 mb-2">Mumbai, India | November 2022 – July 2023</p>
+        <p class="text-gray-300 text-justify">
+          At KPMG, I delivered advanced threat detection enhancements by investigating complex alerts across multiple platforms including Sentinel, Splunk, and CrowdStrike. My efforts in refining detection logic helped eliminate noise and sharpen focus on genuine threats. I led proactive threat hunts mapping to the MITRE ATT&CK framework, successfully identifying sophisticated lateral movements. I also developed custom detection rules in KQL to catch phishing attempts and credential misuse. A key achievement was deploying Microsoft Defender across hybrid infrastructure and configuring Conditional Access policies in Azure AD to secure user access. I designed executive security dashboards to visualize incident trends and containment metrics, empowering leadership to make informed decisions while ensuring vulnerability management processes cleared over 95% of critical risks.
+        </p>
+      </div>
+
+      <!-- TCS -->
+      <div class="relative">
+        <div class="timeline-marker"></div>
+        <h3 class="text-xl font-semibold">Tata Consultancy Services – Systems Engineer / Cyber Security Analyst</h3>
+        <p class="text-sm text-gray-400 mb-2">Indore, India | July 2019 – November 2022</p>
+        <p class="text-gray-300 text-justify">
+          During my tenure at Tata Consultancy Services, I transformed alert triaging and detection workflows by automating KQL queries in Microsoft Sentinel, shortening response times significantly. I optimized IDS/IPS operations by tuning alert parameters and reducing false positives, enabling security analysts to focus on high-value threats. I engineered log onboarding pipelines from diverse telemetry sources, enhancing event correlation and situational awareness. Managing security controls for a massive endpoint fleet, I deployed automated playbooks easing manual workloads. My forensic analyses curbed persistent malware outbreaks and I implemented layered Microsoft 365 threat protections to reduce email risks. I led extensive audit cycles mapped to major frameworks, driving remediation efforts and fortifying control environments. A proud achievement includes guiding junior analysts through hands-on training, which substantially cut false escalations.
+        </p>
+      </div>
+
+      <!-- Dell -->
+      <div class="relative">
+        <div class="timeline-marker"></div>
+        <h3 class="text-xl font-semibold">Dell Technologies – SOC Analyst</h3>
+        <p class="text-sm text-gray-400 mb-2">India | August 2018 – July 2019</p>
+        <p class="text-gray-300 text-justify">
+          Starting my security career at Dell Technologies, I honed my skills in triaging complex phishing, malware, and DDoS alerts using industry-leading SIEM tools. I utilized Wireshark to detect and report unauthorized access attempts, contributing to network defense. Partnering with Tier 2 analysts, I refined firewall and IDS/IPS configurations to diminish false positives and elevate detection accuracy. I regularly simulated phishing attacks to gauge employee susceptibility and tracked improvements. Monitoring hundreds of endpoints with Defender XDR, I ensured rapid threat escalation and compliance documentation. I contributed to successful pre-audit preparations by managing ISO 27001 technical controls and performed vulnerability scans that led to prioritized remediation.
+        </p>
+      </div>
+
     </div>
+  </section>
 
-    <!-- Custom Cybersecurity Background -->
-    <div class="grid-bg"></div>
-    <div class="scan-line"></div>
-    <div id="cyber-bg" class="cyber-bg"></div>
-
-    <!-- Navigation -->
-    <nav class="nav" id="navbar">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="nav-brand">
-                    <span class="glitch" data-text="Abhishek Deshpande">Abhishek Deshpande</span>
-                </div>
-                <div class="nav-menu hidden md:flex space-x-8" id="nav-menu">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#experience" class="nav-link">Experience</a>
-                    <a href="#skills" class="nav-link">Skills</a>
-                    <a href="#projects" class="nav-link">Projects</a>
-                    <a href="#contact" class="nav-link">Contact</a>
-                </div>
-                <div class="nav-toggle md:hidden" id="nav-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="glitch" data-text="Abhishek Deshpande">Abhishek Deshpande</span>
-            </h1>
-            <div class="hero-subtitle">
-                <span class="terminal-prompt">root@security:~$ </span>
-                <span id="typing-text" class="typing-text"></span>
-            </div>
-            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                Experienced cloud security professional specializing in adversarial emulation, 
-                vulnerability assessment, and infrastructure hardening across Azure, AWS, and GCP environments.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <a href="#contact" class="btn">Get In Touch</a>
-                <a href="#projects" class="btn">View Projects</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title fade-in">About Me</h2>
-            <div class="max-w-4xl mx-auto">
-                <div class="card fade-in">
-                    <div class="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-8">
-                        <div class="flex-shrink-0">
-                            <div class="w-48 h-48 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                                <svg class="w-24 h-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-lg text-gray-300 leading-relaxed mb-4">
-                                I'm Abhishek Deshpande, a passionate cybersecurity professional with extensive experience in cloud security, 
-                                vulnerability assessment, and incident response. My expertise spans across major cloud platforms 
-                                including Azure, AWS, and Google Cloud Platform.
-                            </p>
-                            <p class="text-lg text-gray-300 leading-relaxed mb-6">
-                                I specialize in adversarial emulation, using the MITRE ATT&CK framework to simulate real-world 
-                                attack scenarios and strengthen organizational defenses. My work has helped organizations reduce 
-                                their attack surface and improve their security posture significantly.
-                            </p>
-                            <div class="flex flex-wrap gap-4">
-                                <span class="px-3 py-1 bg-green-500 bg-opacity-20 text-green-400 rounded-full text-sm">Cloud Security</span>
-                                <span class="px-3 py-1 bg-blue-500 bg-opacity-20 text-blue-400 rounded-full text-sm">Penetration Testing</span>
-                                <span class="px-3 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded-full text-sm">MITRE ATT&CK</span>
-                                <span class="px-3 py-1 bg-red-500 bg-opacity-20 text-red-400 rounded-full text-sm">Incident Response</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="section">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title fade-in">Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item slide-in-left">
-                    <div class="card">
-                        <h3 class="text-2xl font-bold text-green-400 mb-2">Azure Adversarial Emulation Specialist</h3>
-                        <p class="text-blue-400 font-semibold mb-2">Cloud Security Projects | 2023 - Present</p>
-                        <p class="text-gray-300 mb-4">
-                            Led comprehensive adversarial emulation and attack surface reduction initiatives across Azure environments. 
-                            Identified 15+ critical misconfigurations and developed 4 MITRE ATT&CK-aligned incident response playbooks.
-                        </p>
-                        <ul class="text-sm text-gray-400 space-y-2">
-                            <li>• Simulated adversarial techniques in 3 isolated Azure lab environments</li>
-                            <li>• Uncovered over 15 misconfigurations across NSGs, IAM policies, and public-facing endpoints</li>
-                            <li>• Performed vulnerability assessments using OpenVAS and Nmap, identifying 8 critical exposures</li>
-                            <li>• Reduced time-to-remediation for detected threats in sandboxed scenarios</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item slide-in-right">
-                    <div class="card">
-                        <h3 class="text-2xl font-bold text-green-400 mb-2">Cloud Infrastructure Hardening Expert</h3>
-                        <p class="text-blue-400 font-semibold mb-2">Multi-Cloud Security | 2022 - 2023</p>
-                        <p class="text-gray-300 mb-4">
-                            Specialized in comprehensive compliance auditing and infrastructure hardening across AWS and Azure 
-                            environments, focusing on IAM policy optimization and security group configurations.
-                        </p>
-                        <ul class="text-sm text-gray-400 space-y-2">
-                            <li>• Reviewed IAM policies, Security Groups, and VPC configurations across AWS and Azure</li>
-                            <li>• Identified 20+ misconfigured permissions violating CIS benchmarks</li>
-                            <li>• Integrated Microsoft Defender XDR with Azure Security Center and configured AWS GuardDuty</li>
-                            <li>• Mapped audit findings to NIST 800-53 and ISO 27001 controls, reducing compliance gaps by 40%</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item slide-in-left">
-                    <div class="card">
-                        <h3 class="text-2xl font-bold text-green-400 mb-2">GCP Security Posture Management Lead</h3>
-                        <p class="text-blue-400 font-semibold mb-2">Google Cloud Security | 2021 - 2022</p>
-                        <p class="text-gray-300 mb-4">
-                            Managed comprehensive security posture and threat detection across Google Cloud Platform environments, 
-                            implementing Zero Trust Architecture principles and custom SIEM integrations.
-                        </p>
-                        <ul class="text-sm text-gray-400 space-y-2">
-                            <li>• Enabled Google Cloud Security Command Center monitoring across 3 GCP projects</li>
-                            <li>• Surfaced 12+ security risks through asset inventory and policy violation monitoring</li>
-                            <li>• Deployed custom SIEM integrations in QRadar and Splunk with detection rules</li>
-                            <li>• Implemented Zero Trust Architecture using Identity-Aware Proxy (IAP)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item slide-in-right">
-                    <div class="card">
-                        <h3 class="text-2xl font-bold text-green-400 mb-2">Email Security & Phishing Defense Analyst</h3>
-                        <p class="text-blue-400 font-semibold mb-2">Security Awareness Projects | 2021</p>
-                        <p class="text-gray-300 mb-4">
-                            Designed and executed comprehensive phishing simulation campaigns and email security implementations, 
-                            significantly reducing organizational vulnerability to email-based attacks.
-                        </p>
-                        <ul class="text-sm text-gray-400 space-y-2">
-                            <li>• Designed and launched GoPhish simulation for 50 users with 25% baseline click-through rate</li>
-                            <li>• Configured SPF, DKIM, and DMARC in AWS Route 53</li>
-                            <li>• Reduced phishing success rate from 25% to under 5%</li>
-                            <li>• Correlated attack tactics with MITRE ATT&CK framework for enhanced defense strategies</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title fade-in">Skills & Technologies</h2>
-            <div class="skill-grid">
-                <div class="skill-item fade-in">
-                    <div class="skill-icon">☁️</div>
-                    <h3 class="text-xl font-bold text-green-400 mb-2">Cloud Platforms</h3>
-                    <p class="text-gray-300">Azure, AWS, GCP, Microsoft 365, Google Workspace</p>
-                </div>
-                <div class="skill-item fade-in">
-                    <div class="skill-icon">🛡️</div>
-                    <h3 class="text-xl font-bold text-blue-400 mb-2">Security Tools</h3>
-                    <p class="text-gray-300">OpenVAS, Nmap, Microsoft Defender XDR, AWS GuardDuty, QRadar, Splunk, GoPhish</p>
-                </div>
-                <div class="skill-item fade-in">
-                    <div class="skill-icon">📋</div>
-                    <h3 class="text-xl font-bold text-purple-400 mb-2">Frameworks</h3>
-                    <p class="text-gray-300">MITRE ATT&CK, NIST 800-53, ISO 27001, CIS Benchmarks, Zero Trust Architecture</p>
-                </div>
-                <div class="skill-item fade-in">
-                    <div class="skill-icon">🎯</div>
-                    <h3 class="text-xl font-bold text-red-400 mb-2">Specializations</h3>
-                    <p class="text-gray-300">Adversarial Emulation, Vulnerability Assessment, Incident Response, Cloud Hardening</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title fade-in">Projects</h2>
-            <div class="projects-grid">
-                <div class="card fade-in">
-                    <h3 class="text-2xl font-bold text-green-400 mb-3">Azure Adversarial Emulation Lab</h3>
-                    <p class="text-gray-300 mb-4">
-                        Comprehensive threat simulation environment across 3 isolated Azure lab environments, 
-                        uncovering over 15 critical security misconfigurations and developing MITRE ATT&CK-aligned incident response strategies.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-2 py-1 bg-blue-500 bg-opacity-20 text-blue-400 rounded text-sm">Azure</span>
-                        <span class="px-2 py-1 bg-red-500 bg-opacity-20 text-red-400 rounded text-sm">MITRE ATT&CK</span>
-                        <span class="px-2 py-1 bg-green-500 bg-opacity-20 text-green-400 rounded text-sm">OpenVAS</span>
-                        <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">Nmap</span>
-                    </div>
-                    <span class="inline-block px-3 py-1 bg-green-500 text-black rounded-full text-sm font-semibold">Production</span>
-                </div>
-
-                <div class="card fade-in">
-                    <h3 class="text-2xl font-bold text-blue-400 mb-3">Multi-Cloud Security Audit Framework</h3>
-                    <p class="text-gray-300 mb-4">
-                        Advanced compliance auditing system for AWS and Azure environments with automated violation detection, 
-                        mapping findings to NIST 800-53 and ISO 27001 controls, achieving 40% reduction in compliance gaps.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">AWS</span>
-                        <span class="px-2 py-1 bg-blue-500 bg-opacity-20 text-blue-400 rounded text-sm">Azure</span>
-                        <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">NIST 800-53</span>
-                        <span class="px-2 py-1 bg-green-500 bg-opacity-20 text-green-400 rounded text-sm">CIS Benchmarks</span>
-                    </div>
-                    <span class="inline-block px-3 py-1 bg-blue-500 text-black rounded-full text-sm font-semibold">Active</span>
-                </div>
-
-                <div class="card fade-in">
-                    <h3 class="text-2xl font-bold text-purple-400 mb-3">GCP Zero Trust Security Implementation</h3>
-                    <p class="text-gray-300 mb-4">
-                        Complete Zero Trust Architecture deployment using Identity-Aware Proxy (IAP) across 3 GCP projects, 
-                        with custom SIEM integrations in QRadar and Splunk for enhanced threat detection and response.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-2 py-1 bg-red-500 bg-opacity-20 text-red-400 rounded text-sm">GCP IAP</span>
-                        <span class="px-2 py-1 bg-yellow-500 bg-opacity-20 text-yellow-400 rounded text-sm">QRadar</span>
-                        <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">Splunk</span>
-                        <span class="px-2 py-1 bg-blue-500 bg-opacity-20 text-blue-400 rounded text-sm">Zero Trust</span>
-                    </div>
-                    <span class="inline-block px-3 py-1 bg-purple-500 text-black rounded-full text-sm font-semibold">Deployed</span>
-                </div>
-
-                <div class="card fade-in">
-                    <h3 class="text-2xl font-bold text-red-400 mb-3">Advanced Phishing Defense System</h3>
-                    <p class="text-gray-300 mb-4">
-                        Comprehensive email security implementation using GoPhish simulation framework, SPF/DKIM/DMARC configuration, 
-                        reducing organizational phishing susceptibility from 25% to under 5% through technical controls and training.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-2 py-1 bg-red-500 bg-opacity-20 text-red-400 rounded text-sm">GoPhish</span>
-                        <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">AWS Route 53</span>
-                        <span class="px-2 py-1 bg-green-500 bg-opacity-20 text-green-400 rounded text-sm">DMARC/SPF/DKIM</span>
-                        <span class="px-2 py-1 bg-blue-500 bg-opacity-20 text-blue-400 rounded text-sm">Security Awareness</span>
-                    </div>
-                    <span class="inline-block px-3 py-1 bg-yellow-500 text-black rounded-full text-sm font-semibold">Ongoing</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title fade-in">Get In Touch</h2>
-            <div class="max-w-2xl mx-auto">
-                <div class="card fade-in">
-                    <div class="text-center mb-8">
-                        <p class="text-lg text-gray-300 mb-4">
-                            Ready to secure your infrastructure? Let's discuss how I can help strengthen your cybersecurity posture.
-                        </p>
-                        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                </svg>
-                                <span class="text-gray-300">abhishek.deshpande@example.com</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                                <span class="text-gray-300">+91 98765 43210</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form id="contact-form" class="space-y-6">
-                        <div class="form-group">
-                            <input type="text" class="form-input" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-input" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-input" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-input" rows="5" placeholder="Your Message" required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn">Send Message</button>
-                        </div>
-                    </form>
-
-                    <div class="flex justify-center space-x-6 mt-8">
-                        <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // Configuration
-        const CONFIG = {
-            typingStrings: [
-                'Cloud Security Engineer',
-                'Cybersecurity Specialist', 
-                'Azure Security Expert',
-                'Penetration Tester',
-                'Incident Response Lead',
-                'MITRE ATT&CK Specialist'
-            ],
-            typingSpeed: 100,
-            deletingSpeed: 50,
-            delayBetweenStrings: 2000
-        };
-
-        // DOM Elements
-        const loadingScreen = document.getElementById('loading-screen');
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        const typingText = document.getElementById('typing-text');
-        const contactForm = document.getElementById('contact-form');
-        const cyberBg = document.getElementById('cyber-bg');
-        const navbar = document.getElementById('navbar');
-
-        // Loading Screen Animation
-        class LoadingScreen {
-            constructor() {
-                this.loadingText = document.querySelector('.loading-text');
-                this.commands = [
-                    'Initializing security protocols...',
-                    'Loading threat intelligence database...',
-                    'Establishing secure connection...',
-                    'Authenticating user credentials...',
-                    'Deploying defensive measures...',
-                    'Welcome, Abhishek Deshpande!'
-                ];
-                this.currentCommand = 0;
-                this.init();
-            }
-
-            init() {
-                this.typeCommand();
-            }
-
-            typeCommand() {
-                if (this.currentCommand >= this.commands.length) {
-                    setTimeout(() => this.hideLoading(), 1000);
-                    return;
-                }
-
-                const command = this.commands[this.currentCommand];
-                let i = 0;
-                this.loadingText.textContent = '';
-
-                const typeInterval = setInterval(() => {
-                    this.loadingText.textContent += command[i];
-                    i++;
-
-                    if (i >= command.length) {
-                        clearInterval(typeInterval);
-                        this.currentCommand++;
-                        setTimeout(() => this.typeCommand(), 800);
-                    }
-                }, 50);
-            }
-
-            hideLoading() {
-                loadingScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                    new TypingAnimation();
-                    new CyberSecurityBackground();
-                    new ScrollAnimations();
-                }, 500);
-            }
-        }
-
-        // Typing Animation
-        class TypingAnimation {
-            constructor() {
-                this.strings = CONFIG.typingStrings;
-                this.currentStringIndex = 0;
-                this.currentCharIndex = 0;
-                this.isDeleting = false;
-                this.init();
-            }
-
-            init() {
-                this.type();
-            }
-
-            type() {
-                const currentString = this.strings[this.currentStringIndex];
-                
-                if (this.isDeleting) {
-                    typingText.textContent = currentString.substring(0, this.currentCharIndex - 1);
-                    this.currentCharIndex--;
-                } else {
-                    typingText.textContent = currentString.substring(0, this.currentCharIndex + 1);
-                    this.currentCharIndex++;
-                }
-
-                let typeSpeed = this.isDeleting ? CONFIG.deletingSpeed : CONFIG.typingSpeed;
-
-                if (!this.isDeleting && this.currentCharIndex === currentString.length) {
-                    typeSpeed = CONFIG.delayBetweenStrings;
-                    this.isDeleting = true;
-                } else if (this.isDeleting && this.currentCharIndex === 0) {
-                    this.isDeleting = false;
-                    this.currentStringIndex = (this.currentStringIndex + 1) % this.strings.length;
-                }
-
-                setTimeout(() => this.type(), typeSpeed);
-            }
-        }
-
-        // Custom Cybersecurity Background Effect
-        class CyberSecurityBackground {
-            constructor() {
-                this.securityIcons = [
-                    '🔒', '🛡️', '🔐', '🔑', '⚡', '🌐', '💾', '⚠️', 
-                    '🔍', '📡', '💻', '🖥️', '📱', '🔧', '⚙️', '🎯'
-                ];
-                this.init();
-            }
-
-            init() {
-                this.createFloatingIcons();
-                setInterval(() => this.addRandomIcon(), 3000);
-            }
-
-            createFloatingIcons() {
-                for (let i = 0; i < 15; i++) {
-                    this.addRandomIcon();
-                }
-            }
-
-            addRandomIcon() {
-                const icon = document.createElement('div');
-                icon.className = 'security-icon';
-                icon.textContent = this.securityIcons[Math.floor(Math.random() * this.securityIcons.length)];
-                icon.style.left = Math.random() * 100 + 'vw';
-                icon.style.animationDelay = Math.random() * 20 + 's';
-                icon.style.animationDuration = (20 + Math.random() * 10) + 's';
-                
-                cyberBg.appendChild(icon);
-
-                // Remove icon after animation
-                setTimeout(() => {
-                    if (icon.parentNode) {
-                        icon.parentNode.removeChild(icon);
-                    }
-                }, 35000);
-            }
-        }
-
-        // Scroll Animations
-        class ScrollAnimations {
-            constructor() {
-                this.elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-                this.init();
-            }
-
-            init() {
-                this.observer = new IntersectionObserver(
-                    (entries) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('animate');
-                            }
-                        });
-                    },
-                    { threshold: 0.1 }
-                );
-
-                this.elements.forEach((el) => {
-                    this.observer.observe(el);
-                });
-            }
-        }
-
-        // Navigation
-        class Navigation {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                // Mobile menu toggle
-                navToggle.addEventListener('click', () => {
-                    navToggle.classList.toggle('active');
-                    navMenu.classList.toggle('active');
-                });
-
-                // Close mobile menu when clicking on links
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navToggle.classList.remove('active');
-                        navMenu.classList.remove('active');
-                    });
-                });
-
-                // Navbar scroll effect
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
-                });
-
-                // Smooth scroll for anchor links
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const target = document.querySelector(this.getAttribute('href'));
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    });
-                });
-            }
-        }
-
-        // Contact Form
-        class ContactForm {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                if (contactForm) {
-                    contactForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleSubmit();
-                    });
-                }
-            }
-
-            handleSubmit() {
-                const formData = new FormData(contactForm);
-                const button = contactForm.querySelector('button[type="submit"]');
-                const originalText = button.textContent;
-
-                button.textContent = 'Sending...';
-                button.disabled = true;
-
-                // Simulate form submission
-                setTimeout(() => {
-                    alert('Message sent successfully! I will get back to you soon.');
-                    contactForm.reset();
-                    button.textContent = originalText;
-                    button.disabled = false;
-                }, 2000);
-            }
-        }
-
-        // Initialize everything when loading is complete
-        document.addEventListener('DOMContentLoaded', () => {
-            new LoadingScreen();
-            new Navigation();
-            new ContactForm();
-        });
-    </script>
+  <!-- Footer -->
+  <footer class="p-6 border-t border-gray-700 text-center text-sm text-gray-500">
+    &copy; 2025 Abhishek Deshpande — All Rights Reserved
+  </footer>
 </body>
 </html>
