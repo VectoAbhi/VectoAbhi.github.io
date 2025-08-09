@@ -4,7 +4,7 @@ body {
   color: #222;
   margin: 0;
   padding: 0;
-  max-width: 920px;
+  max-width: 950px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -19,14 +19,14 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 2.3em;
-  letter-spacing: 1px;
+  font-size: 2.35em;
   font-weight: 600;
+  letter-spacing: 1px;
 }
 
 header p {
-  margin: 8px 0 7px 0;
-  font-size: 1.08em;
+  margin: 6px 0 7px 0;
+  font-size: 1.13em;
 }
 
 header a {
@@ -38,53 +38,63 @@ header a {
 section {
   background: #fff;
   border-radius: 9px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06), 0 0px 1px #b7c5d8;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.09), 0 0px 1px #b7c5d8;
   margin: 22px 0 0 0;
-  padding: 26px 28px 18px 28px;
+  padding: 26px 30px 18px 30px;
 }
 
 h2 {
   color: #002b4e;
-  padding-bottom: 2px;
-  margin-top: 0;
-  margin-bottom: 13px;
-  font-size: 1.35em;
   border-bottom: 2px solid #0061a8;
-  display: inline-block;
+  font-size: 1.23em;
+  margin-top: 0;
+  margin-bottom: 15px;
   font-weight: 600;
+  display: inline-block;
+  padding-bottom: 4px;
 }
 
 ul {
-  padding-left: 1.15em;
+  padding-left: 1.25em;
   margin-top: 0.3em;
 }
 
 li {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
   font-size: 1em;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 article {
   background: #f5f8fc;
   border-radius: 7px;
-  padding: 17px 15px 12px 15px;
-  margin: 15px 0 6px 0;
-  box-shadow: 0 1px 3.5px #e5eefd;
+  padding: 16px 15px 12px 15px;
+  margin: 17px 0 10px 0;
+  box-shadow: 0 1px 5px #e5eefd;
 }
 
 article h3 {
   color: #00376b;
-  margin-top: 0;
-  font-size: 1.12em;
+  margin: 0 0 7px 0;
+  font-size: 1.095em;
   font-weight: 500;
+}
+
+p {
+  font-size: 1em;
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 footer {
   text-align: center;
   color: #8592a3;
-  padding: 22px 0 20px 0;
+  padding: 24px 0 20px 0;
   font-size: 1em;
-  margin-top: 34px;
+  margin-top: 36px;
 }
 
 a {
@@ -98,22 +108,22 @@ a:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 750px) {
   body {
-    max-width: 97vw;
+    max-width: 98vw;
     padding: 0;
   }
   section {
-    padding: 18px 6vw 13px 6vw;
+    padding: 17px 5vw 11px 5vw;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 500px) {
   header, section, footer {
-    padding-left: 4vw;
-    padding-right: 4vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
   }
   section {
-    padding: 13px 4vw 10px 4vw;
+    padding: 10px 2vw 8px 2vw;
   }
 }
