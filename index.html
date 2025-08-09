@@ -29,7 +29,10 @@
     window.onload = () => feather.replace();
   </script>
 </head>
-<body class="bg-gray-900 text-gray-300 font-sans max-w-6xl mx-auto p-6 md:p-12">
+<body class="bg-gray-900 text-gray-300 font-sans max-w-6xl mx-auto p-6 md:p-12 relative overflow-x-hidden">
+
+  <!-- Animated Matrix Background Canvas -->
+  <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
   <!-- HEADER -->
   <header class="bg-gradient-to-r from-cyan-800 to-blue-900 rounded-xl shadow-xl p-10 text-center fade-in-up mb-16">
@@ -44,8 +47,7 @@
     </nav>
   </header>
 
-  <main class="space-y-20">
-
+  <main class="space-y-20 relative z-10">
     <!-- ABOUT -->
     <section class="fade-in-up bg-gray-800 rounded-xl shadow-lg p-10">
       <h2 class="text-3xl font-bold text-cyan-400 border-b-4 border-cyan-500 inline-block pb-2 mb-6">About Me</h2>
@@ -165,5 +167,46 @@
     © 2025 Abhishek Deshpande
   </footer>
 
+  <!-- Matrix Background Animation Script -->
+  <script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let columns;
+    let drops = [];
+
+    function init() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      columns = Math.floor(width / 20);
+      drops = Array(columns).fill(1);
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = '#0ff';
+      ctx.font = '20px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(text, i * 20, drops[i] * 20);
+
+        if (drops[i] * 20 > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    init();
+    setInterval(draw, 50);
+    window.addEventListener('resize', init);
+  </script>
 </body>
 </html>
