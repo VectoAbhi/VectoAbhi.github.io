@@ -1,212 +1,440 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth bg-black text-green-400 selection:bg-cyan-500 selection:text-black">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Abhishek Deshpande - Cybersecurity Portfolio</title>
-
-  <!-- Tailwind CSS via CDN -->
+  <title>Cybersecurity Portfolio - Cloud Security Specialist</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Feather Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    /* Custom fade-in-up animation */
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    /* Matrix rain chars */
+    @keyframes matrix-fall {
+      0% { transform: translateY(-100%) }
+      100% { transform: translateY(100%) }
     }
-    .fade-in-up { animation: fadeInUp 0.9s ease forwards; }
+    .matrix-char {
+      position: absolute;
+      top: -1.5rem;
+      font-family: monospace;
+      font-weight: 900;
+      color: #00ff41;
+      user-select: none;
+      animation-name: matrix-fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    /* Glitch Text */
+    .glitch {
+      position: relative;
+      color: #00ff41;
+      font-weight: 900;
+      font-size: 2.75rem;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      user-select: none;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+      clip: rect(0, 900px, 0, 0);
+      animation-duration: 2s;
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation-iteration-count: infinite;
+    }
+    .glitch::before {
+      color: #0ff;
+      animation-name: glitchTop;
+      z-index: 1;
+    }
+    .glitch::after {
+      color: #f0f;
+      animation-name: glitchBottom;
+      z-index: 2;
+    }
+    @keyframes glitchTop {
+      0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+      10% {
+        clip: rect(0, 900px, 30px, 0);
+        transform: translate(5px, -5px);
+      }
+      20% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+      30% {
+        clip: rect(0, 900px, 30px, 0);
+        transform: translate(-5px, 5px);
+      }
+      40%, 100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+    }
+    @keyframes glitchBottom {
+      0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+      10% {
+        clip: rect(20px, 900px, 50px, 0);
+        transform: translate(-5px, 5px);
+      }
+      20% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+      30% {
+        clip: rect(20px, 900px, 50px, 0);
+        transform: translate(5px, -5px);
+      }
+      40%, 100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0);
+      }
+    }
+
+    /* Typing effect container */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blinkCaret {
+      0%, 100% { border-color: transparent }
+      50% { border-color: #00ff41 }
+    }
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #00ff41;
+      animation: typing 3s steps(30, end), blinkCaret 0.75s step-end infinite;
+      width: 0;
+    }
+
+    /* Scroll fade in */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Scroll slide in left */
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Scroll slide in right */
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Hover glow effect */
+    .glow-hover:hover {
+      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
+      color: #0ff;
+    }
+
+    /* Neon button effect */
+    .btn-neon {
+      background: transparent;
+      border: 2px solid #00ff41;
+      color: #00ff41;
+      transition: background-color 0.3s, color 0.3s;
+      box-shadow: 0 0 5px #00ff41;
+    }
+    .btn-neon:hover {
+      background-color: #00ff41;
+      color: black;
+      box-shadow: 0 0 12px #00ff41, 0 0 24px #00ff41;
+    }
   </style>
-
-  <script>
-    // Toggle extra project details
-    function toggleDetails(id) {
-      const el = document.getElementById(id);
-      el.classList.toggle('max-h-0');
-      el.classList.toggle('max-h-96');
-    }
-    window.onload = () => feather.replace();
-  </script>
 </head>
-<body class="bg-gray-900 text-gray-300 font-sans max-w-6xl mx-auto p-6 md:p-12 relative overflow-x-hidden">
+<body class="relative min-h-screen font-mono">
 
-  <!-- Animated Matrix Background Canvas -->
-  <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+  <!-- Matrix Rain Background -->
+  <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
 
-  <!-- HEADER -->
-  <header class="bg-gradient-to-r from-cyan-800 to-blue-900 rounded-xl shadow-xl p-10 text-center fade-in-up mb-16">
-    <h1 class="text-5xl font-extrabold text-cyan-400 mb-3">Abhishek Deshpande</h1>
-    <p class="text-xl text-cyan-200 mb-4 font-semibold">Cybersecurity Engineer | SIEM & Cloud Security Specialist | Incident Response Expert</p>
-    <nav class="flex flex-wrap justify-center gap-6 text-cyan-300 text-sm md:text-base">
-      <div>📍 Chicago, IL</div>
-      <div>📞 <a href="tel:+13126729070" class="hover:text-cyan-500 underline">312-672-9070</a></div>
-      <div>✉️ <a href="mailto:abhishek.d.secure@outlook.com" class="hover:text-cyan-500 underline">abhishek.d.secure@outlook.com</a></div>
-      <div><a href="https://linkedin.com/in/abhishekd" target="_blank" class="hover:text-cyan-500 underline">LinkedIn</a></div>
-      <div><a href="https://github.com/abhishekd" target="_blank" class="hover:text-cyan-500 underline">GitHub</a></div>
-    </nav>
+  <header class="relative z-20 max-w-5xl mx-auto p-6 text-center">
+    <h1 class="glitch" data-text="CYBERSECURITY PORTFOLIO">CYBERSECURITY PORTFOLIO</h1>
+    <p id="typing-text" class="mt-4 text-xl h-8 inline-block text-cyan-400 min-w-[16rem]"></p>
   </header>
 
-  <main class="space-y-20 relative z-10">
-    <!-- ABOUT -->
-    <section class="fade-in-up bg-gray-800 rounded-xl shadow-lg p-10">
-      <h2 class="text-3xl font-bold text-cyan-400 border-b-4 border-cyan-500 inline-block pb-2 mb-6">About Me</h2>
-      <p class="text-justify leading-relaxed text-lg">
-        Passionate about defending digital frontiers, I am a results-driven cybersecurity engineer with 5+ years’ experience spanning enterprise, consulting, and financial environments.
-        Currently at JP Morgan Chase, I specialize in SIEM operations, threat detection, and cloud security, blending automation with threat intelligence to outpace adversaries.
-        I believe in proactive defense, mentoring security teams, and building compliance-driven cultures that harden organizations against evolving cyber threats.
-      </p>
+  <nav class="fixed top-4 right-6 z-30">
+    <button id="menuToggle" aria-label="Toggle menu" class="text-green-400 border-2 border-green-400 rounded p-2 hover:bg-green-400 hover:text-black transition">
+      &#9776;
+    </button>
+  </nav>
+
+  <aside id="menu" class="fixed top-16 right-6 bg-black border border-green-400 rounded p-4 space-y-4 text-green-400 shadow-lg transform scale-0 origin-top-right transition-transform duration-200 z-40">
+    <a href="#experience" class="block hover:underline hover:text-cyan-400">Experience</a>
+    <a href="#skills" class="block hover:underline hover:text-cyan-400">Skills</a>
+    <a href="#projects" class="block hover:underline hover:text-cyan-400">Projects</a>
+    <a href="#contact" class="block hover:underline hover:text-cyan-400">Contact</a>
+  </aside>
+
+  <main class="relative z-20 max-w-5xl mx-auto px-6 pb-20">
+    <!-- Professional Experience Section -->
+    <section id="experience" class="mt-12 space-y-8">
+      <h2 class="text-3xl font-bold border-b-2 border-cyan-400 inline-block glow-hover">Professional Experience</h2>
+
+      <article class="fade-in slide-in-left">
+        <h3 class="text-xl font-semibold underline decoration-cyan-500 decoration-2">Azure Adversarial Emulation and Attack Surface Reduction</h3>
+        <ul class="list-disc list-inside space-y-1 mt-2 text-green-300">
+          <li>Simulated adversarial techniques in 3 isolated Azure lab environments, uncovering over 15 misconfigurations across Network Security Groups (NSGs), IAM policies, and public-facing endpoints.</li>
+          <li>Performed vulnerability assessments using OpenVAS and Nmap, identifying and classifying 8 critical exposures related to unsecured ports and outdated packages.</li>
+          <li>Developed 4 Azure-focused incident response playbooks aligned with the MITRE ATT&CK framework, reducing time-to-remediation for detected threats in sandboxed scenarios.</li>
+        </ul>
+      </article>
+
+      <article class="fade-in slide-in-right">
+        <h3 class="text-xl font-semibold underline decoration-cyan-500 decoration-2">Cloud Infrastructure Hardening and Compliance Audit - AWS &amp; Azure</h3>
+        <ul class="list-disc list-inside space-y-1 mt-2 text-green-300">
+          <li>Reviewed IAM policies, Security Groups, and VPC configurations across AWS and Azure environments, identifying 20+ misconfigured permissions violating CIS benchmarks.</li>
+          <li>Integrated Microsoft Defender XDR with Azure Security Center and configured AWS GuardDuty, enhancing threat visibility and alerting for privilege escalation attempts.</li>
+          <li>Mapped audit findings to NIST 800-53 and ISO 27001 controls, producing remediation plans and evidence packages that reduced cloud compliance gaps by 40%.</li>
+        </ul>
+      </article>
+
+      <article class="fade-in slide-in-left">
+        <h3 class="text-xl font-semibold underline decoration-cyan-500 decoration-2">GCP Security Posture Management and Threat Detection</h3>
+        <ul class="list-disc list-inside space-y-1 mt-2 text-green-300">
+          <li>Enabled Google Cloud Security Command Center to monitor asset inventory, policy violations, and threat findings across three GCP projects, surfacing 12+ security risks.</li>
+          <li>Deployed custom SIEM integrations in QRadar and Splunk with detection rules for service abuse and bucket exposure.</li>
+          <li>Implemented Zero Trust Architecture principles using Identity-Aware Proxy (IAP) and context-aware access to restrict lateral movement between GCP workloads.</li>
+        </ul>
+      </article>
+
+      <article class="fade-in slide-in-right">
+        <h3 class="text-xl font-semibold underline decoration-cyan-500 decoration-2">Email Phishing Simulation and Defense Project</h3>
+        <ul class="list-disc list-inside space-y-1 mt-2 text-green-300">
+          <li>Designed and launched a GoPhish simulation for 50 users, establishing a 25% click-through rate baseline.</li>
+          <li>Configured SPF, DKIM, and DMARC in AWS Route 53, cutting phishing success rate from 25% to under 5%.</li>
+          <!-- Resume cut off here, preserve as is -->
+        </ul>
+      </article>
     </section>
 
-    <!-- SKILLS -->
-    <section class="fade-in-up bg-gradient-to-tr from-cyan-900 to-blue-900 rounded-xl shadow-lg p-10 text-cyan-300">
-      <h2 class="text-3xl font-bold border-b-4 border-cyan-500 inline-block pb-2 mb-8">Core Expertise</h2>
-      <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
-        <li class="flex gap-3"><i data-feather="shield"></i> Enterprise Security Monitoring & Incident Management</li>
-        <li class="flex gap-3"><i data-feather="alert-triangle"></i> Advanced Threat Detection: Sentinel, Splunk, CrowdStrike, QRadar</li>
-        <li class="flex gap-3"><i data-feather="cloud"></i> Cloud Security: AWS, Azure, GCP & Zero Trust</li>
-        <li class="flex gap-3"><i data-feather="tool"></i> Vulnerability Assessment: Nessus, Qualys</li>
-        <li class="flex gap-3"><i data-feather="zap"></i> Phishing Simulations & MITRE ATT&CK Analysis</li>
-        <li class="flex gap-3"><i data-feather="code"></i> Automation & Scripting: KQL, Python, Bash</li>
-        <li class="flex gap-3"><i data-feather="clipboard"></i> Governance: NIST, ISO 27001, SOC 2, CIS</li>
-      </ul>
-    </section>
+    <!-- Skills Section -->
+    <section id="skills" class="mt-16 space-y-10">
+      <h2 class="text-3xl font-bold border-b-2 border-cyan-400 inline-block glow-hover">Technical Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-    <!-- EXPERIENCE -->
-    <section class="fade-in-up" id="experience">
-      <h2 class="text-3xl font-bold text-cyan-400 border-b-4 border-cyan-500 pb-2 mb-10">Professional Experience</h2>
-      <div class="space-y-10">
-        <article class="bg-gray-800 p-8 rounded-xl shadow-lg">
-          <h3 class="text-xl font-semibold text-cyan-300">Cybersecurity Engineer – JP Morgan Chase</h3>
-          <p class="italic text-gray-400">Jun 2025 – Present | Chicago, IL</p>
-          <ul class="list-disc list-inside mt-4 space-y-2 text-justify">
-            <li>Streamlined log ingestion & event correlation for 20+ banking apps, reducing triage time by 67%.</li>
-            <li>Led phishing simulations and improved employee recognition of threats via MITRE ATT&CK alignment.</li>
-            <li>Enhanced identity governance with Azure AD, MFA, RBAC, limiting privilege creep.</li>
+        <div class="fade-in slide-in-left p-4 border border-green-400 rounded shadow-lg">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Cloud Platforms</h3>
+          <ul class="list-disc list-inside text-green-300">
+            <li>Microsoft Azure</li>
+            <li>AWS</li>
+            <li>Google Cloud Platform (GCP)</li>
+            <li>Microsoft 365</li>
           </ul>
-        </article>
-        <article class="bg-gray-800 p-8 rounded-xl shadow-lg">
-          <h3 class="text-xl font-semibold text-cyan-300">Cyber Security Consultant – KPMG</h3>
-          <p class="italic text-gray-400">Nov 2022 – Jul 2023 | Mumbai, India</p>
-          <ul class="list-disc list-inside mt-4 space-y-2 text-justify">
-            <li>Refined detection logic in multi-SIEM environments, eliminating repetitive false positives.</li>
-            <li>Executed threat hunts uncovering advanced lateral movement tactics.</li>
-            <li>Implemented Conditional Access controls, improving access security posture.</li>
+        </div>
+
+        <div class="fade-in slide-in-right p-4 border border-green-400 rounded shadow-lg">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Security Tools & SIEM</h3>
+          <ul class="list-disc list-inside text-green-300">
+            <li>OpenVAS, Nmap</li>
+            <li>Microsoft Defender XDR & Azure Security Center</li>
+            <li>AWS GuardDuty</li>
+            <li>QRadar, Splunk</li>
           </ul>
-        </article>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section class="fade-in-up" id="projects">
-      <h2 class="text-3xl font-extrabold text-cyan-400 border-b-4 border-cyan-500 pb-3 mb-12">Cybersecurity Case Studies</h2>
-      <div class="grid gap-8 md:grid-cols-2">
-
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg cursor-pointer" onclick="toggleDetails('p1')">
-          <h3 class="text-xl font-semibold text-cyan-300 mb-3">Azure Adversarial Emulation</h3>
-          <p id="p1" class="max-h-24 overflow-hidden transition-all text-justify">
-            Simulated attacks in three isolated Azure labs, identifying 15+ misconfigurations and 8 high-risk exposures with OpenVAS/Nmap. Created 4 MITRE ATT&CK-aligned IR playbooks, reducing remediation time.
-          </p>
         </div>
 
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg cursor-pointer" onclick="toggleDetails('p2')">
-          <h3 class="text-xl font-semibold text-cyan-300 mb-3">Cloud Hardening & Compliance – AWS & Azure</h3>
-          <p id="p2" class="max-h-24 overflow-hidden transition-all text-justify">
-            Found 20+ CIS violations in AWS/Azure configs. Integrated Defender XDR & GuardDuty, boosting threat visibility and reducing compliance gaps by 40%.
-          </p>
+        <div class="fade-in slide-in-left p-4 border border-green-400 rounded shadow-lg">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Frameworks & Compliance</h3>
+          <ul class="list-disc list-inside text-green-300">
+            <li>MITRE ATT&CK</li>
+            <li>NIST 800-53</li>
+            <li>ISO 27001</li>
+            <li>CIS Benchmarks</li>
+          </ul>
         </div>
 
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg cursor-pointer" onclick="toggleDetails('p3')">
-          <h3 class="text-xl font-semibold text-cyan-300 mb-3">GCP Security Posture Management</h3>
-          <p id="p3" class="max-h-24 overflow-hidden transition-all text-justify">
-            Enabled Google Cloud SCC across projects, surfacing 12+ security risks. Built SIEM rules in Splunk/QRadar to detect bucket exposures and enforce Zero Trust.
-          </p>
-        </div>
-
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg cursor-pointer" onclick="toggleDetails('p4')">
-          <h3 class="text-xl font-semibold text-cyan-300 mb-3">Email Phishing Simulation & Defense</h3>
-          <p id="p4" class="max-h-24 overflow-hidden transition-all text-justify">
-            Conducted GoPhish simulation reducing success rate from 25% to <5%. Configured SPF/DKIM/DMARC, strengthened org-wide phishing defenses.
-          </p>
+        <div class="fade-in slide-in-right p-4 border border-green-400 rounded shadow-lg">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Specializations</h3>
+          <ul class="list-disc list-inside text-green-300">
+            <li>Vulnerability Assessment</li>
+            <li>Incident Response</li>
+            <li>Penetration Testing</li>
+            <li>Cloud Security Architecture</li>
+          </ul>
         </div>
 
       </div>
     </section>
 
-    <!-- CERTIFICATIONS -->
-    <section class="fade-in-up" id="certs">
-      <h2 class="text-3xl font-extrabold text-cyan-400 border-b-4 border-cyan-500 pb-3 mb-8">Certifications</h2>
-      <ul class="list-disc list-inside space-y-2 text-lg">
-        <li>ISC2 Certified in Cybersecurity – May 2025</li>
-        <li>CompTIA CySA+ – Expected Sep 2025</li>
-        <li>Microsoft SC-200 – Expected Oct 2025</li>
-      </ul>
-    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="mt-16 space-y-10">
+      <h2 class="text-3xl font-bold border-b-2 border-cyan-400 inline-block glow-hover">Project Showcase</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-    <!-- EDUCATION -->
-    <section class="fade-in-up" id="edu">
-      <h2 class="text-3xl font-extrabold text-cyan-400 border-b-4 border-cyan-500 pb-3 mb-8">Education</h2>
-      <div class="space-y-4">
-        <div><strong class="text-cyan-300">Illinois Institute of Technology</strong> – M.S. Information Technology & Management (2023–2025)</div>
-        <div><strong class="text-cyan-300">Dr. Babasaheb Ambedkar Marathwada University</strong> – B.E. Computer Science & Engineering (2015–2019)</div>
+        <div class="fade-in p-6 border border-green-400 rounded shadow-lg hover:shadow-cyan-500 transition-shadow cursor-pointer">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Azure Adversarial Emulation Lab</h3>
+          <p class="text-green-300">
+            Production-ready threat simulation environment uncovering Azure misconfigurations and testing attack techniques.
+          </p>
+        </div>
+
+        <div class="fade-in p-6 border border-green-400 rounded shadow-lg hover:shadow-cyan-500 transition-shadow cursor-pointer">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Multi-Cloud Security Audit Framework</h3>
+          <p class="text-green-300">
+            Automated compliance auditing and remediation planning for AWS and Azure cloud infrastructures.
+          </p>
+        </div>
+
+        <div class="fade-in p-6 border border-green-400 rounded shadow-lg hover:shadow-cyan-500 transition-shadow cursor-pointer">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Zero Trust IAP Implementation</h3>
+          <p class="text-green-300">
+            Deployment of Identity-Aware Proxy and context-aware access policies to enhance security postures on GCP.
+          </p>
+        </div>
+
+        <div class="fade-in p-6 border border-green-400 rounded shadow-lg hover:shadow-cyan-500 transition-shadow cursor-pointer">
+          <h3 class="text-xl font-semibold mb-2 underline decoration-cyan-400">Phishing Defense System</h3>
+          <p class="text-green-300">
+            Comprehensive phishing simulation and email authentication setup reducing successful phishing from 25% to under 5%.
+          </p>
+        </div>
+
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="fade-in-up" id="contact">
-      <h2 class="text-3xl font-extrabold text-cyan-400 border-b-4 border-cyan-500 pb-3 mb-8">Contact</h2>
-      <p>Email: <a href="mailto:abhishek.d.secure@outlook.com" class="underline hover:text-cyan-400">abhishek.d.secure@outlook.com</a></p>
-      <p>Phone: <a href="tel:+13126729070" class="underline hover:text-cyan-400">312-672-9070</a></p>
-      <p>LinkedIn: <a href="https://linkedin.com/in/abhishekd" target="_blank" class="underline hover:text-cyan-400">linkedin.com/in/abhishekd</a></p>
-      <p>GitHub: <a href="https://github.com/abhishekd" target="_blank" class="underline hover:text-cyan-400">github.com/abhishekd</a></p>
+    <!-- Contact / Footer -->
+    <section id="contact" class="mt-20 text-center text-green-400">
+      <h2 class="text-3xl font-bold border-b-2 border-cyan-400 inline-block glow-hover mb-6">Contact</h2>
+      <p>If you'd like to connect or view the full resume, please reach out:</p>
+      <p class="mt-2"><a href="mailto:your.email@example.com" class="underline hover:text-cyan-400">your.email@example.com</a></p>
+      <p class="mt-1"><a href="#" class="underline hover:text-cyan-400">LinkedIn / GitHub (Add your links)</a></p>
     </section>
-
   </main>
 
-  <footer class="text-center text-gray-500 text-sm py-6 mt-16 border-t border-gray-800">
-    © 2025 Abhishek Deshpande
-  </footer>
-
-  <!-- Matrix Background Animation Script -->
   <script>
+    // Menu toggle logic
+    const menuToggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('menu');
+    menuToggle.addEventListener('click', () => {
+      if (menu.classList.contains('scale-100')) {
+        menu.classList.remove('scale-100');
+        menu.classList.add('scale-0');
+      } else {
+        menu.classList.remove('scale-0');
+        menu.classList.add('scale-100');
+      }
+    });
+
+    // Typing effect for hero
+    const typingText = document.getElementById('typing-text');
+    const titles = [
+      'Cloud Security Specialist',
+      'Adversarial Emulation Expert',
+      'Vulnerability Assessor',
+      'Incident Response Engineer',
+      'Zero Trust Architect'
+    ];
+    let charIndex = 0;
+    let titleIndex = 0;
+    let typing = true;
+    let currentText = '';
+    let interval;
+
+    function type() {
+      if (typing) {
+        currentText = titles[titleIndex].slice(0, charIndex + 1);
+        typingText.textContent = currentText;
+        charIndex++;
+        if (charIndex === titles[titleIndex].length) {
+          typing = false;
+          setTimeout(type, 1500);
+          return;
+        }
+      } else {
+        currentText = titles[titleIndex].slice(0, charIndex - 1);
+        typingText.textContent = currentText;
+        charIndex--;
+        if (charIndex === 0) {
+          typing = true;
+          titleIndex = (titleIndex + 1) % titles.length;
+        }
+      }
+      setTimeout(type, typing ? 100 : 50);
+    }
+    type();
+
+    // Scroll animations
+    const faders = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    faders.forEach(fader => observer.observe(fader));
+
+    // Matrix rain animation
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
-
     let width, height;
     let columns;
     let drops = [];
 
-    function init() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()*&^%';
+
+    function initMatrix() {
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
 
       columns = Math.floor(width / 20);
-      drops = Array(columns).fill(1);
+      drops = [];
+      for (let x = 0; x < columns; x++) drops[x] = Math.floor(Math.random() * height / 20);
     }
 
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = '#0ff';
-      ctx.font = '20px monospace';
-
+      ctx.fillStyle = '#00ff41';
+      ctx.font = '18px monospace';
       for (let i = 0; i < drops.length; i++) {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
         ctx.fillText(text, i * 20, drops[i] * 20);
 
-        if (drops[i] * 20 > height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
+        if (drops[i] * 20 > height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
 
-    init();
+    window.addEventListener('resize', initMatrix);
+    initMatrix();
     setInterval(draw, 50);
-    window.addEventListener('resize', init);
   </script>
+
 </body>
 </html>
