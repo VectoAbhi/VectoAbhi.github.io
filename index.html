@@ -466,6 +466,8 @@
             text-transform: uppercase;
             font-weight: 600;
             letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn:hover {
@@ -907,197 +909,220 @@
     </footer>
 
     <script>
-        // Loading screen functionality
-        const loadingScreen = document.getElementById('loading-screen');
-        const loadingText = document.querySelector('.loading-text');
-        
-        const commands = [
-            'Initializing security protocols...',
-            'Loading threat intelligence...',
-            'Establishing secure connection...',
-            'Authenticating user credentials...',
-            'Launching defensive systems...',
-            'Portfolio loaded successfully!'
-        ];
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loading screen functionality
+            const loadingScreen = document.getElementById('loading-screen');
+            const loadingText = document.querySelector('.loading-text');
+            
+            if (!loadingScreen || !loadingText) {
+                console.error('Loading screen elements not found');
+                return;
+            }
+            
+            const commands = [
+                'Initializing security protocols...',
+                'Loading threat intelligence...',
+                'Establishing secure connection...',
+                'Authenticating user credentials...',
+                'Launching defensive systems...',
+                'Portfolio loaded successfully!'
+            ];
 
-        let commandIndex = 0;
-        let charIndex = 0;
+            let commandIndex = 0;
+            let charIndex = 0;
 
-        function typeCommand() {
-            if (commandIndex < commands.length) {
-                if (charIndex < commands[commandIndex].length) {
-                    loadingText.textContent += commands[commandIndex].charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeCommand, 50);
-                } else {
-                    setTimeout(() => {
-                        loadingText.textContent = '';
-                        charIndex = 0;
-                        commandIndex++;
-                        if (commandIndex < commands.length) {
-                            typeCommand();
-                        } else {
-                            setTimeout(hideLoadingScreen, 1000);
-                        }
-                    }, 1000);
+            function typeCommand() {
+                if (commandIndex < commands.length) {
+                    if (charIndex < commands[commandIndex].length) {
+                        loadingText.textContent += commands[commandIndex].charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeCommand, 50);
+                    } else {
+                        setTimeout(() => {
+                            loadingText.textContent = '';
+                            charIndex = 0;
+                            commandIndex++;
+                            if (commandIndex < commands.length) {
+                                typeCommand();
+                            } else {
+                                setTimeout(hideLoadingScreen, 1000);
+                            }
+                        }, 1000);
+                    }
                 }
             }
-        }
 
-        function hideLoadingScreen() {
-            loadingScreen.classList.add('fade-out');
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 500);
-        }
-
-        // Start loading animation
-        setTimeout(typeCommand, 1000);
-
-        // Hero typing effect
-        const typingElement = document.getElementById('typing-text');
-        const phrases = [
-            'Cyber Security Engineer',
-            'SIEM Operations Specialist',
-            'Cloud Security Architect', 
-            'Threat Hunter',
-            'Incident Response Expert'
-        ];
-
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typePhrase() {
-            const currentPhrase = phrases[phraseIndex];
-            
-            if (isDeleting) {
-                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
+            function hideLoadingScreen() {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    // Start hero typing effect after loading screen is hidden
+                    initHeroTyping();
+                }, 500);
             }
 
-            let typeSpeed = isDeleting ? 30 : 100;
+            // Start loading animation
+            setTimeout(typeCommand, 500);
 
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500;
+            // Hero typing effect
+            function initHeroTyping() {
+                const typingElement = document.getElementById('typing-text');
+                if (!typingElement) return;
+
+                const phrases = [
+                    'Cyber Security Engineer',
+                    'SIEM Operations Specialist',
+                    'Cloud Security Architect', 
+                    'Threat Hunter',
+                    'Incident Response Expert'
+                ];
+
+                let phraseIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+
+                function typePhrase() {
+                    const currentPhrase = phrases[phraseIndex];
+                    
+                    if (isDeleting) {
+                        typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+
+                    let typeSpeed = isDeleting ? 30 : 100;
+
+                    if (!isDeleting && charIndex === currentPhrase.length) {
+                        typeSpeed = 2000;
+                        isDeleting = true;
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                        typeSpeed = 500;
+                    }
+
+                    setTimeout(typePhrase, typeSpeed);
+                }
+
+                typePhrase();
             }
 
-            setTimeout(typePhrase, typeSpeed);
-        }
-
-        // Start typing effect after loading screen
-        setTimeout(() => {
-            typePhrase();
-        }, 6000);
-
-        // Navigation scroll effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 100) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-
-        // Mobile navigation toggle
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-
-        navToggle.addEventListener('click', () => {
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+            // Navigation scroll effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (nav) {
+                    if (window.scrollY > 100) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                }
             });
-        });
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+            // Mobile navigation toggle
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', () => {
+                    navToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    navMenu.classList.toggle('hidden');
+                });
+
+                // Close mobile menu when clicking on a link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        navMenu.classList.add('hidden');
                     });
-                }
+                });
+            }
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
             });
-        });
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+            // Scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with animation classes
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+                observer.observe(el);
             });
-        }, observerOptions);
 
-        // Observe all elements with animation classes
-        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
-            observer.observe(el);
-        });
+            // Cybersecurity background effect
+            const cyberBg = document.getElementById('cyber-bg');
+            const securityIcons = ['🔒', '🛡️', '⚡', '🔍', '💻', '🌐', '🔐', '⭐', '🚀', '💡'];
 
-        // Cybersecurity background effect
-        const cyberBg = document.getElementById('cyber-bg');
-        const securityIcons = ['🔒', '🛡️', '⚡', '🔍', '💻', '🌐', '🔐', '⭐', '🚀', '💡'];
+            function createSecurityIcon() {
+                if (!cyberBg) return;
+                
+                const icon = document.createElement('div');
+                icon.className = 'security-icon';
+                icon.textContent = securityIcons[Math.floor(Math.random() * securityIcons.length)];
+                icon.style.left = Math.random() * 100 + 'vw';
+                icon.style.animationDelay = Math.random() * 2 + 's';
+                cyberBg.appendChild(icon);
 
-        function createSecurityIcon() {
-            const icon = document.createElement('div');
-            icon.className = 'security-icon';
-            icon.textContent = securityIcons[Math.floor(Math.random() * securityIcons.length)];
-            icon.style.left = Math.random() * 100 + 'vw';
-            icon.style.animationDelay = Math.random() * 2 + 's';
-            cyberBg.appendChild(icon);
+                // Remove icon after animation
+                setTimeout(() => {
+                    if (icon.parentNode) {
+                        icon.remove();
+                    }
+                }, 35000);
+            }
 
-            // Remove icon after animation
-            setTimeout(() => {
-                icon.remove();
-            }, 35000);
-        }
+            // Create floating icons periodically
+            setInterval(createSecurityIcon, 3000);
 
-        // Create floating icons periodically
-        setInterval(createSecurityIcon, 3000);
+            // Contact form handling
+            const contactForm = document.getElementById('contact-form');
+            const btnText = document.getElementById('btn-text');
+            const btnLoading = document.getElementById('btn-loading');
 
-        // Contact form handling
-        const contactForm = document.getElementById('contact-form');
-        const btnText = document.getElementById('btn-text');
-        const btnLoading = document.getElementById('btn-loading');
+            if (contactForm && btnText && btnLoading) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Show loading state
+                    btnText.classList.add('hidden');
+                    btnLoading.classList.remove('hidden');
 
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Show loading state
-            btnText.classList.add('hidden');
-            btnLoading.classList.remove('hidden');
-
-            // Simulate form submission
-            setTimeout(() => {
-                btnText.classList.remove('hidden');
-                btnLoading.classList.add('hidden');
-                alert('Thank you for your message! I\'ll get back to you soon.');
-                contactForm.reset();
-            }, 2000);
+                    // Simulate form submission
+                    setTimeout(() => {
+                        btnText.classList.remove('hidden');
+                        btnLoading.classList.add('hidden');
+                        alert('Thank you for your message! I\'ll get back to you soon.');
+                        contactForm.reset();
+                    }, 2000);
+                });
+            }
         });
     </script>
 </body>
